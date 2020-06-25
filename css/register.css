@@ -4,6 +4,7 @@
   background-size: cover;
   display: flex;
   justify-content: flex-end;
+  font-family: sans-serif;
 }
 .register-container .register-form{
   width: 400px;
@@ -15,7 +16,6 @@
   text-align: center;
   font-size: 38px;
   color: #757575;
-  font-family: sans-serif;
   padding-top: 20px;
   padding-bottom: 20px;
 }

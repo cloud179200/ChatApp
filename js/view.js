@@ -16,6 +16,34 @@ view.setActiveScreen = (screenName) => {
         }
         controller.register(registerInfo)
       })
-      break
+      //redirect loginScreen when click 
+      const redirectLogin = document.getElementById('redirect-to-login')
+      redirectLogin.addEventListener('click', (e) => {
+        view.setActiveScreen('loginScreen')
+      })
+
+      break;
+    case 'loginScreen':
+      document.getElementById('app').innerHTML = components.loginScreen;
+      const loginForm = document.getElementById('form-login')
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const email =  loginForm.email.value
+        const password = loginForm.password.value
+        controller.login(email, password)
+      })
+
+      const redirectRegister = document.getElementById('redirect-to-register')
+      redirectRegister.addEventListener('click', (e) => {
+        view.setActiveScreen('registerScreen')
+      })   
+      break;
+    case 'welcomeScreen':
+      document.getElementById('app').innerHTML = components.welcomeScreen;
+      break;
   }
+}
+
+view.setErrorMessage = (elementId, message) => {
+  document.getElementById(elementId).innerHTML = message;
 }
