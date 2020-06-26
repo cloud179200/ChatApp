@@ -31,3 +31,4 @@ model.login = (email, password) => {
         alert(err.message);
     })
 }
+

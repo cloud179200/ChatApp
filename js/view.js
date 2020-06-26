@@ -40,6 +40,14 @@ view.setActiveScreen = (screenName) => {
     case 'welcomeScreen':
       document.getElementById('app').innerHTML = components.welcomeScreen;
       document.getElementById('welcome').innerHTML = model.currentUser.displayName+" - "+model.currentUser.email;
+
+      var logoutBtn = document.getElementById("logoutBtn")
+      logoutBtn.addEventListener('click', (e)=>{
+        e.preventDefault()
+        firebase.auth().signOut();
+        view.setActiveScreen('loginScreen');
+        alert("Your are logged out");
+      });
       break;
   }
 }

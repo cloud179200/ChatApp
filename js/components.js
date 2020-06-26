@@ -1,7 +1,7 @@
 const components = {}
 components.welcomeScreen = `
-  <div id="welcome" style="text-align: center">Welcome to chat app</div>
-
+  <div id="welcome"></div>
+  <button id="logoutBtn">Logout</button>
 `
 components.registerScreen = `
 <div class="register-container">
