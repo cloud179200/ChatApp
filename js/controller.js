@@ -38,6 +38,3 @@ controller.login = (email, password) => {
   if(password !== '' && email !== '') model.login(email, password);
 }
 
-controller.welcome = (name, email) => {
-  document.getElementById('welcome').innerHTML = name+" - "+email
-}

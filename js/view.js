@@ -32,7 +32,6 @@ view.setActiveScreen = (screenName) => {
         const password = loginForm.password.value
         controller.login(email, password)
       })
-
       const redirectRegister = document.getElementById('redirect-to-register')
       redirectRegister.addEventListener('click', (e) => {
         view.setActiveScreen('registerScreen')
@@ -40,7 +39,7 @@ view.setActiveScreen = (screenName) => {
       break;
     case 'welcomeScreen':
       document.getElementById('app').innerHTML = components.welcomeScreen;
-      controller.welcome(model.currentUser.displayName, model.currentUser.email)
+      document.getElementById('welcome').innerHTML = model.currentUser.displayName+" - "+model.currentUser.email;
       break;
   }
 }

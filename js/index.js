@@ -14,10 +14,19 @@ window.onload = () => {
   console.log(firebase.app().name);
   firebase.auth().onAuthStateChanged((user) => {
     if(user){
-      view.setActiveScreen('welcomeScreen')
+      if(user.emailVerified){
+        model.currentUser = {
+          displayName: user.displayName,
+          email: user.email
+        }
+        view.setActiveScreen('welcomeScreen')
+      }
+      else {
+        view.setActiveScreen('loginScreen');
+      }
     }
     else{
-      view.setActiveScreen('registerScreen');
+      view.setActiveScreen('loginScreen');
     }
   });
 }
