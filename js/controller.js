@@ -21,8 +21,8 @@ controller.register = (registerInfo) => {
     view.setErrorMessage('error-confirm-password-name','Confirm password incorrect')
   }
   else view.setErrorMessage('error-confirm-password-name','')
-  if (registerInfo.firstName !== '' && registerInfo.lastName !== '' && registerInfo.email !== '' && registerInfo.password != '' &&registerInfo.password === registerInfo.confirmPassword){
-    view.setActiveScreen('loginScreen')
+  if (registerInfo.firstName !== '' && registerInfo.lastName !== '' && registerInfo.email !== '' && registerInfo.password != '' && registerInfo.password === registerInfo.confirmPassword){
+    model.register(registerInfo.firstName, registerInfo.lastName, registerInfo.email, registerInfo.password)
   }
 }
 controller.login = (email, password) => {
@@ -35,5 +35,9 @@ controller.login = (email, password) => {
     view.setErrorMessage('error-password-name','Password incorrect')
   }
   else view.setErrorMessage('error-password-name','')
-  if(password !== '' && email !== '') view.setActiveScreen('welcomeScreen');
+  if(password !== '' && email !== '') model.login(email, password);
+}
+
+controller.welcome = (name, email) => {
+  document.getElementById('welcome').innerHTML = name+" - "+email
 }

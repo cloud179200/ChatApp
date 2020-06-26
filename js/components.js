@@ -1,6 +1,6 @@
 const components = {}
 components.welcomeScreen = `
-  <div>Welcome to chat app</div>
+  <div id="welcome" style="text-align: center">Welcome to chat app</div>
 `
 components.registerScreen = `
 <div class="register-container">

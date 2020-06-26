@@ -40,6 +40,7 @@ view.setActiveScreen = (screenName) => {
       break;
     case 'welcomeScreen':
       document.getElementById('app').innerHTML = components.welcomeScreen;
+      controller.welcome(model.currentUser.displayName, model.currentUser.email)
       break;
   }
 }
