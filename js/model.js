@@ -1,5 +1,8 @@
 const model = {}
 model.currentUser = undefined
+model.collection = 'conversations'
+model.currentConversation = undefined
+
 
 model.register = (firstName, lastName, email, password) =>{
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
@@ -32,3 +35,25 @@ model.login = (email, password) => {
     })
 }
 
+model.loadConversations = () =>{
+    firebase.firestore().collection(model.collection).get().then(res => {
+        const data = utils.getDataFromDocs(res.docs);
+        if(data.length > 0){
+            model.currentConversation = data[0];
+            console.log(model.currentConversation)
+            view.showCurrentConversation()
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+    model.updateCurrentConversation();
+}
+
+model.updateCurrentConversation = (message) => {
+    if(model.currentConversation != undefined){
+        let db = firebase.firestore().collection(model.collection).doc(model.currentConversation.id)
+        db.update({
+            messages: firebase.firestore.FieldValue.arrayUnion(message)
+        })
+    }
+}

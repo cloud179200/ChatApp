@@ -4,7 +4,7 @@
     height: 100vh;
     display: flex;
     justify-content: flex-end;
-    font-family: sans-serif;
+    font-family: Barlow;
 }
 .login-container .login-form{
     background-color: white;
