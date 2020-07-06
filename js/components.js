@@ -7,7 +7,7 @@ components.welcomeScreen = `
 components.registerScreen = `
 <div class="register-container">
 <div class="register-form">
-  <div class="title">MindX chat</div>
+  <div class="title">VA chat</div>
   <form id="form-register">
     <div class="name-wrapper">
       <div class="input-wrapper">
@@ -43,7 +43,7 @@ components.registerScreen = `
 components.loginScreen = `
 <div class="login-container">
 <div class="login-form">
-  <div class="title">MindX chat</div>
+  <div class="title">VA chat</div>
     <form action="" id="form-login">
       <div class="input-wrapper">
         <input type="text" name="email" placeholder="Email...">
@@ -64,7 +64,7 @@ components.loginScreen = `
 components.chatScreen = `
 <div class="chat-container">
         <div class="chat-header">
-            MindX Chat App
+            Viet Anh Chat App
         </div>
         <div class="main">
             <div class="conversation-detail">

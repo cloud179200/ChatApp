@@ -57,22 +57,22 @@ view.setActiveScreen = (screenName) => {
     case "chatScreen":
       document.getElementById("app").innerHTML = components.chatScreen;
       const sendMessageForm = document.querySelector("#sendMessageForm");
-      model.loadConversations();
       sendMessageForm.addEventListener("submit", (e) => {
         e.preventDefault();
         if (sendMessageForm.message.value != "") {
           const message = {
-            owner: "1851060380@e.tlu.edu.vn",
+            owner: model.currentUser.email,
             content: sendMessageForm.message.value,
             createdat: new Date().toISOString()
           };
-          view.addMessage(message);
-          model.updateCurrentConversation(message)
+          model.updateCurrentConversation(message);
+          model.listenConversationChange();
           document.getElementById("sendMessageForm").reset();
           var listMessage = document.querySelector(".list-message");
           listMessage.scrollTop = listMessage.scrollHeight;
         }
       });
+      model.loadConversations();
       break;
   }
 };
