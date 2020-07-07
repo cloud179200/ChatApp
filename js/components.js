@@ -57,7 +57,7 @@ components.loginScreen = `
 </div>
 `
 components.chatScreen = `
-<div class="chat-header"><div class="content-header"> Viet Anh Chat App</div><span id="signOutBtn"><i class="fas fa-sign-out-alt"></i></span></div>
+<div class="chat-header"><div class="content-header">Chat App</div><span id="signOutBtn"><i class="fas fa-sign-out-alt"></i></span></div>
 <div class="chat-container">
       <div class="aside-right">
         <div class="list-conversation">

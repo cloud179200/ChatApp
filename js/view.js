@@ -54,10 +54,13 @@ view.setActiveScreen = (screenName) => {
           listMessage.scrollTop = listMessage.scrollHeight;
         }
       });
+
+
       const signOutBtn = document.querySelector("#signOutBtn");
       signOutBtn.addEventListener("click", (e) => {
         firebase.auth().signOut();
       });
+
       model.loadConversations();
       break;
   }
@@ -82,6 +85,7 @@ view.addMessage = (message) => {
 };
 
 view.showCurrentConversation = () => {
+  document.querySelector(".list-message").innerHTML = ``;
   for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage);
   }
@@ -93,9 +97,27 @@ view.addConversation = (conversation) => {
   if(conversation.id === model.currentConversation.id){
     conversationWrapper.classList.add("current");
   }
+
+  let id = conversation.id;
   conversationWrapper.innerHTML =`
     <div class="conversation-title">${conversation.title}</div>
     <div class="conversation-num-users">${model.currentConversation.users.length} Member</div>
   `
+  conversationWrapper.setAttribute("id", id);
   document.querySelector('.list-conversation').appendChild(conversationWrapper);
+  
+  
+  document.getElementById(id).addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('.conversation').classList.remove('current');
+    for(conversation of model.conversations){
+      if(conversation.id === id){
+        model.currentConversation = conversation;
+        break;
+      };
+    };
+    document.getElementById(model.currentConversation.id).classList.add('current');
+    document.querySelector(".list-message").innerHTML = ``;
+    model.loadCurrentConversation(id);
+  });
 }

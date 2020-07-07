@@ -67,21 +67,34 @@ model.listenConversationChange = () => {
 };
 
 model.loadConversations = () => {
+  let isFirstRun = false;
   firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).get().then((res) => {
+    if(isFirstRun == true){
+      return
+    }
+    isFirstRun = true;
     const data = utils.getDataFromDocs(res.docs);
     if (data.length > 0) {
       model.currentConversation = data[0];
-      console.log(data);
-      view.showCurrentConversation();
-
       model.conversations = data;
+      document.querySelector(".list-conversation").innerHTML = ``;
       for(conversation of data){
-        console.log(conversation);
         view.addConversation(conversation)
       }
+      view.showCurrentConversation();
     }
   })
   .catch((err) => {
     console.log(err);
   });
+};
+
+model.loadCurrentConversation = (id) => {
+  for(conversation of model.conversations){
+    if(conversation.id == id){
+      model.currentConversation = conversation;
+      break;
+    }
+  }
+  view.showCurrentConversation();
 };
