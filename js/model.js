@@ -44,7 +44,12 @@ model.updateCurrentConversation = (message) => {
     db.update(dataToUpdate);
 };
 model.listenConversationChange = () => {
+  let isFirstRun = false;
     firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
+      if(isFirstRun == true){
+        return
+      }
+      isFirstRun = true;
       const docChanges = res.docChanges();
       for(oneChange of docChanges){
         const oneChangeData = utils.getDataFromDoc(oneChange.doc)
@@ -62,13 +67,9 @@ model.listenConversationChange = () => {
 };
 
 model.loadConversations = () => {
-  let isFirstRun = false;
   firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).get().then((res) => {
-    if(isFirstRun == true){
-      return
-    }
-    isFirstRun = true;
     const data = utils.getDataFromDocs(res.docs);
+    console.log(data);
     if (data.length > 0) {
       model.currentConversation = data[0];
       model.conversations = data;
