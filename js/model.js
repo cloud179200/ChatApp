@@ -36,20 +36,6 @@ model.login = (email, password) => {
     });
 };
 
-model.loadConversations = () => {
-    firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).get()
-    .then((res) => {
-      const data = utils.getDataFromDocs(res.docs);
-      if (data.length > 0) {
-        model.currentConversation = data[0];
-        view.showCurrentConversation();
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 model.updateCurrentConversation = (message) => {
     let dataToUpdate = {
         messages: firebase.firestore.FieldValue.arrayUnion(message),
@@ -65,14 +51,37 @@ model.listenConversationChange = () => {
       }
       isFirstRun = true
       const docChanges = res.docChanges();
-      console.log(docChanges)
       for(oneChange of docChanges){
-        console.log(oneChange)
         const oneChangeData = utils.getDataFromDoc(oneChange.doc)
         if(oneChangeData.id == model.currentConversation.id){
           model.currentConversation = oneChangeData
           view.addMessage(oneChangeData.messages[oneChangeData.messages.length -1]);
         }
+        for(let i = 0; i<model.conversations.length; i++){
+          if(model.conversations[i].id == oneChangeData.id){
+            model.conversations[i] = oneChangeData;
+          }
+        }
     }
     })
+};
+
+model.loadConversations = () => {
+  firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).get().then((res) => {
+    const data = utils.getDataFromDocs(res.docs);
+    if (data.length > 0) {
+      model.currentConversation = data[0];
+      console.log(data);
+      view.showCurrentConversation();
+
+      model.conversations = data;
+      for(conversation of data){
+        console.log(conversation);
+        view.addConversation(conversation)
+      }
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 };

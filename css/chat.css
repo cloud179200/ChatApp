@@ -23,15 +23,16 @@
     text-align: center;
     width: 95%;
 }
-#signOutBtn{
-    text-align: center;
+#signOutBtn:hover{
+    color: black;
+    transition: 0.5s;
 }
 
 .chat-container .main{
     height: 100%    ;
     flex-grow: 1;
 }
-.main .conversation-title{
+.main .current-conversation-title{
     background-color: white;
     height: 64px;
     text-align: center;

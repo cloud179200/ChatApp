@@ -50,11 +50,10 @@ view.setActiveScreen = (screenName) => {
           model.updateCurrentConversation(message);
           model.listenConversationChange();
           document.getElementById("sendMessageForm").reset();
-          listMessage = document.querySelector(".list-message");
+          let listMessage = document.querySelector(".list-message");
           listMessage.scrollTop = listMessage.scrollHeight;
         }
       });
-
       const signOutBtn = document.querySelector("#signOutBtn");
       signOutBtn.addEventListener("click", (e) => {
         firebase.auth().signOut();
@@ -96,7 +95,7 @@ view.addConversation = (conversation) => {
   }
   conversationWrapper.innerHTML =`
     <div class="conversation-title">${conversation.title}</div>
-    <div class="conversation-num-users">${model.currentConversation.users.length}</div>
+    <div class="conversation-num-users">${model.currentConversation.users.length} Member</div>
   `
-  document.querySelector('list-conversations').appendChild(conversationWrapper);
+  document.querySelector('.list-conversation').appendChild(conversationWrapper);
 }
