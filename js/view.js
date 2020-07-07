@@ -80,7 +80,7 @@ view.addMessage = (message) => {
     <div class="content">${message.content}</div>`;
   }
   document.querySelector(".list-message").appendChild(messageWrapper);
-  let listMessage = document.querySelector(".list-message");
+  const listMessage = document.querySelector(".list-message");
   listMessage.scrollTop = listMessage.scrollHeight;
 };
 
