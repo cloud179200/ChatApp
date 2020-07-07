@@ -98,26 +98,25 @@ view.addConversation = (conversation) => {
     conversationWrapper.classList.add("current");
   }
 
-  let id = conversation.id;
   conversationWrapper.innerHTML =`
     <div class="conversation-title">${conversation.title}</div>
     <div class="conversation-num-users">${model.currentConversation.users.length} Member</div>
   `
-  conversationWrapper.setAttribute("id", id);
+  conversationWrapper.setAttribute("id", conversation.id);
   document.querySelector('.list-conversation').appendChild(conversationWrapper);
-  
-  
+
+  let id = conversation.id;
   document.getElementById(id).addEventListener('click', (e) => {
     e.preventDefault();
-    document.querySelector('.conversation').classList.remove('current');
+    document.querySelector(".conversation").classList.remove("current");
     for(conversation of model.conversations){
       if(conversation.id === id){
         model.currentConversation = conversation;
         break;
       };
     };
-    document.getElementById(model.currentConversation.id).classList.add('current');
-    document.querySelector(".list-message").innerHTML = ``;
+    document.getElementById(id).classList.add('current');
     model.loadCurrentConversation(id);
+    model.loadConversations();
   });
 }

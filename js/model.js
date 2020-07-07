@@ -44,18 +44,13 @@ model.updateCurrentConversation = (message) => {
     db.update(dataToUpdate);
 };
 model.listenConversationChange = () => {
-  let isFirstRun = false;
     firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
-      if(isFirstRun == true){
-        return
-      }
-      isFirstRun = true;
       const docChanges = res.docChanges();
       for(oneChange of docChanges){
         const oneChangeData = utils.getDataFromDoc(oneChange.doc)
         if(oneChangeData.id == model.currentConversation.id){
           model.currentConversation = oneChangeData
-          view.addMessage(oneChangeData.messages[oneChangeData.messages.length -1]);
+          view.showCurrentConversation();
         }
         for(let i = 0; i<model.conversations.length; i++){
           if(model.conversations[i].id == oneChangeData.id){
@@ -69,9 +64,10 @@ model.listenConversationChange = () => {
 model.loadConversations = () => {
   firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).get().then((res) => {
     const data = utils.getDataFromDocs(res.docs);
-    console.log(data);
     if (data.length > 0) {
-      model.currentConversation = data[0];
+      if(model.currentConversation == undefined) {
+        model.currentConversation = data[0];
+      }
       model.conversations = data;
       document.querySelector(".list-conversation").innerHTML = ``;
       for(conversation of data){
