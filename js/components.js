@@ -1,9 +1,4 @@
 const components = {}
-components.welcomeScreen = `
-  <div id="welcome"></div>
-  <button id="logoutBtn">Logout</button>
-  <button id="chat">Chat</button>
-`
 components.registerScreen = `
 <div class="register-container">
 <div class="register-form">
@@ -62,20 +57,30 @@ components.loginScreen = `
 </div>
 `
 components.chatScreen = `
+<div class="chat-header"><div class="content-header"> Viet Anh Chat App</div><span id="signOutBtn"><i class="fas fa-sign-out-alt"></i></span></div>
 <div class="chat-container">
-        <div class="chat-header">
-            Viet Anh Chat App
+      <div class="aside-right">
+        <div class="list-conversation">
+          <div class="conversation current">
+            <div class="conversation-title">Title conver</div>
+            <div class="conversation-num-users">2 user</div>
+          </div>
+          <div class="conversation">
+            <div class="conversation-title">Title conver</div>
+            <div class="conversation-num-users">2 user</div>
+          </div>
         </div>
-        <div class="main">
-            <div class="conversation-detail">
-                <div class="conversation-title">First conversation</div>
-                <div class="list-message">
-                </div>
-                <form action="" id="sendMessageForm">
-                    <input class="input" type="text" name="message" placeholder="Type a message..." autocomplete="off">
-                    <button class="btn"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </form>
-            </div>
-        </div>
-    </div>
+      </div>
+      <div class="main">
+          <div class="conversation-detail">
+              <div class="conversation-title">First conversation</div>
+              <div class="list-message">
+              </div>
+              <form action="" id="sendMessageForm">
+                  <input class="input" type="text" name="message" placeholder="Type a message..." autocomplete="off">
+                  <button class="btn"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+              </form>
+          </div>
+      </div>
+  </div>
 `

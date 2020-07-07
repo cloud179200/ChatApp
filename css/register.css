@@ -4,7 +4,6 @@
   background-size: cover;
   display: flex;
   justify-content: flex-end;
-  font-family: Barlow;
 }
 .register-container .register-form{
   width: 400px;

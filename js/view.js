@@ -36,24 +36,6 @@ view.setActiveScreen = (screenName) => {
         view.setActiveScreen("registerScreen");
       });
       break;
-    case "welcomeScreen":
-      document.getElementById("app").innerHTML = components.welcomeScreen;
-      document.getElementById("welcome").innerHTML =
-        model.currentUser.displayName + " - " + model.currentUser.email;
-
-      var logoutBtn = document.getElementById("logoutBtn");
-      logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        firebase.auth().signOut();
-        view.setActiveScreen("loginScreen");
-        alert("Your are logged out");
-      });
-      var chatBtn = document.getElementById("chat");
-      chatBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        view.setActiveScreen("chatScreen");
-      });
-      break;
     case "chatScreen":
       document.getElementById("app").innerHTML = components.chatScreen;
       const sendMessageForm = document.querySelector("#sendMessageForm");
@@ -68,9 +50,14 @@ view.setActiveScreen = (screenName) => {
           model.updateCurrentConversation(message);
           model.listenConversationChange();
           document.getElementById("sendMessageForm").reset();
-          var listMessage = document.querySelector(".list-message");
+          listMessage = document.querySelector(".list-message");
           listMessage.scrollTop = listMessage.scrollHeight;
         }
+      });
+
+      const signOutBtn = document.querySelector("#signOutBtn");
+      signOutBtn.addEventListener("click", (e) => {
+        firebase.auth().signOut();
       });
       model.loadConversations();
       break;
@@ -100,3 +87,16 @@ view.showCurrentConversation = () => {
     view.addMessage(oneMessage);
   }
 };
+
+view.addConversation = (conversation) => {
+  const conversationWrapper = document.createElement('div');
+  conversationWrapper.classList.add("conversation");
+  if(conversation.id === model.currentConversation.id){
+    conversationWrapper.classList.add("current");
+  }
+  conversationWrapper.innerHTML =`
+    <div class="conversation-title">${conversation.title}</div>
+    <div class="conversation-num-users">${model.currentConversation.users.length}</div>
+  `
+  document.querySelector('list-conversations').appendChild(conversationWrapper);
+}

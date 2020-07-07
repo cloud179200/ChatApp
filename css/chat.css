@@ -1,16 +1,35 @@
 .chat-container{
     font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
+    height: calc(100vh - 64px);
+    display: flex;
+}
+.chat-container .aside-right{
+    margin: 1px;
+    width: 15%;
+    border: 1px solid #ecf0f1;
+}
+.current{
+    background-color: #ecf0f1;
 }
 .chat-header{
     background-color: #5f99f5;
+    color: white;
     height: 64px;
-    text-align: center;
     font-size: 24px;
     line-height: 64px;
+    display: flex;
 }
+.content-header{
+    text-align: center;
+    width: 95%;
+}
+#signOutBtn{
+    text-align: center;
+}
+
 .chat-container .main{
-    height: calc(100% - 64px);
+    height: 100%    ;
+    flex-grow: 1;
 }
 .main .conversation-title{
     background-color: white;
@@ -78,22 +97,22 @@
 }
 
 /* width */
-::-webkit-scrollbar {
+.main ::-webkit-scrollbar {
     width: 10px;
   }
   
   /* Track */
-  ::-webkit-scrollbar-track {
+.main ::-webkit-scrollbar-track {
     background: #f1f1f1; 
   }
    
   /* Handle */
-  ::-webkit-scrollbar-thumb {
+.main ::-webkit-scrollbar-thumb {
     background-color: #5f99f5; 
     border-radius: 10px;
   }
   
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+.main ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
