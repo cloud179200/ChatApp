@@ -50,8 +50,6 @@ view.setActiveScreen = (screenName) => {
           model.updateCurrentConversation(message);
           model.listenConversationChange();
           document.getElementById("sendMessageForm").reset();
-          let listMessage = document.querySelector(".list-message");
-          listMessage.scrollTop = listMessage.scrollHeight;
         }
       });
 
@@ -82,6 +80,8 @@ view.addMessage = (message) => {
     <div class="content">${message.content}</div>`;
   }
   document.querySelector(".list-message").appendChild(messageWrapper);
+  let listMessage = document.querySelector(".list-message");
+  listMessage.scrollTop = listMessage.scrollHeight;
 };
 
 view.showCurrentConversation = () => {
@@ -89,6 +89,7 @@ view.showCurrentConversation = () => {
   for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage);
   }
+
 };
 
 view.addConversation = (conversation) => {

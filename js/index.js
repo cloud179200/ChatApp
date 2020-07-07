@@ -18,7 +18,8 @@ window.onload = () => {
           displayName: user.displayName,
           email: user.email
         }
-        view.setActiveScreen('chatScreen')
+        view.setActiveScreen('chatScreen');
+        model.listenConversationChange();
       }
       else {
         view.setActiveScreen('loginScreen');
