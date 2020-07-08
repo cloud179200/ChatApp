@@ -19,9 +19,7 @@ model.register = (firstName, lastName, email, password) => {
 
 model.login = (email, password) => {
   firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then((user) => {
+    .auth().signInWithEmailAndPassword(email, password).then((user) => {
       if (user.user.emailVerified) {
         alert("Success");
         model.currentUser = {
@@ -40,11 +38,15 @@ model.updateCurrentConversation = (message) => {
     let dataToUpdate = {
         messages: firebase.firestore.FieldValue.arrayUnion(message),
     };
-    let db = firebase.firestore().collection(model.collection).doc(model.currentConversation.id);
-    db.update(dataToUpdate);
+    firebase.firestore().collection(model.collection).doc(model.currentConversation.id).update(dataToUpdate);
 };
 model.listenConversationChange = () => {
+    let isFirstRun = false;
     firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
+      if(!isFirstRun){
+        return;
+      }
+      isFirstRun = true;
       const docChanges = res.docChanges();
       for(oneChange of docChanges){
         const oneChangeData = utils.getDataFromDoc(oneChange.doc)
@@ -81,12 +83,11 @@ model.loadConversations = () => {
   });
 };
 
-model.loadCurrentConversation = (id) => {
+model.setCurrentConversation = (id) => {
   for(conversation of model.conversations){
     if(conversation.id == id){
       model.currentConversation = conversation;
       break;
     }
   }
-  view.showCurrentConversation();
 };

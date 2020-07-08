@@ -68,6 +68,13 @@ view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
 };
 
+view.showCurrentConversation = () => {
+  document.querySelector(".list-message").innerHTML = ``;
+  for (let oneMessage of model.currentConversation.messages) {
+    view.addMessage(oneMessage);
+  }
+
+};
 view.addMessage = (message) => {
   const messageWrapper = document.createElement("div");
   messageWrapper.classList.add("message");
@@ -79,26 +86,19 @@ view.addMessage = (message) => {
     messageWrapper.innerHTML = `<div class="owner">${message.owner}</div>
     <div class="content">${message.content}</div>`;
   }
-  document.querySelector(".list-message").appendChild(messageWrapper);
+  
   const listMessage = document.querySelector(".list-message");
+  listMessage.appendChild(messageWrapper);
   listMessage.scrollTop = listMessage.scrollHeight;
 };
-
-view.showCurrentConversation = () => {
-  document.querySelector(".list-message").innerHTML = ``;
-  for (let oneMessage of model.currentConversation.messages) {
-    view.addMessage(oneMessage);
-  }
-
-};
-
 view.addConversation = (conversation) => {
   const conversationWrapper = document.createElement('div');
   conversationWrapper.classList.add("conversation");
+  
   if(conversation.id === model.currentConversation.id){
     conversationWrapper.classList.add("current");
   }
-
+  
   conversationWrapper.innerHTML =`
     <div class="conversation-title">${conversation.title}</div>
     <div class="conversation-num-users">${model.currentConversation.users.length} Member</div>
@@ -106,18 +106,15 @@ view.addConversation = (conversation) => {
   conversationWrapper.setAttribute("id", conversation.id);
   document.querySelector('.list-conversation').appendChild(conversationWrapper);
 
+
+
   let id = conversation.id;
   document.getElementById(id).addEventListener('click', (e) => {
     e.preventDefault();
-    document.querySelector(".conversation").classList.remove("current");
-    for(conversation of model.conversations){
-      if(conversation.id === id){
-        model.currentConversation = conversation;
-        break;
-      };
-    };
-    document.getElementById(id).classList.add('current');
-    model.loadCurrentConversation(id);
+    // document.querySelector(".conversation").classList.remove("current");
+    // document.getElementById(id).classList.add('current');
     model.loadConversations();
+    model.setCurrentConversation(id);
+    view.showCurrentConversation();
   });
 }
