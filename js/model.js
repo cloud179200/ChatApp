@@ -41,12 +41,7 @@ model.updateCurrentConversation = (message) => {
     firebase.firestore().collection(model.collection).doc(model.currentConversation.id).update(dataToUpdate);
 };
 model.listenConversationChange = () => {
-    let isFirstRun = false;
     firebase.firestore().collection(model.collection).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
-      if(!isFirstRun){
-        return;
-      }
-      isFirstRun = true;
       const docChanges = res.docChanges();
       for(oneChange of docChanges){
         const oneChangeData = utils.getDataFromDoc(oneChange.doc)
