@@ -39,18 +39,25 @@ view.setActiveScreen = (screenName) => {
     case "chatScreen":
       document.getElementById("app").innerHTML = components.chatScreen;
       const sendMessageForm = document.querySelector("#sendMessageForm");
+      
       sendMessageForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (sendMessageForm.message.value != "") {
+        if (sendMessageForm.message.value.trim() != "") {
+          let messageValue = sendMessageForm.message.value;
           const message = {
             owner: model.currentUser.email,
-            content: sendMessageForm.message.value,
+            content: messageValue,
             createdat: new Date().toISOString()
           };
           model.updateCurrentConversation(message);
           model.listenConversationChange();
           document.getElementById("sendMessageForm").reset();
         }
+      });
+
+      const newConversationBtn =  document.querySelector("#newConversationBtn");
+      newConversationBtn.addEventListener('click', (e) => {
+        view.setActiveScreen("createConversationScreen");
       });
 
 
@@ -60,6 +67,43 @@ view.setActiveScreen = (screenName) => {
       });
 
       model.loadConversations();
+      break;
+
+      case "createConversationScreen":
+        document.getElementById("app").innerHTML = components.createConversationScreen;
+        
+        const backToChat = document.querySelector("#back-to-chat");
+        backToChat.addEventListener("click", ()=>{
+          document.getElementById("app").innerHTML = components.chatScreen;
+      const sendMessageForm = document.querySelector("#sendMessageForm");
+      
+      sendMessageForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (sendMessageForm.message.value.trim() != '') {
+              const message = {
+                owner: model.currentUser.email,
+                content: sendMessageForm.message.value,
+                createdat: new Date().toISOString()
+              };
+              model.updateCurrentConversation(message);
+              model.listenConversationChange();
+              document.getElementById("sendMessageForm").reset();
+            }
+          });
+
+          const newConversationBtn =  document.querySelector("#newConversationBtn");
+          newConversationBtn.addEventListener('click', (e) => {
+            view.setActiveScreen("createConversationScreen");
+          });
+
+
+          const signOutBtn = document.querySelector("#signOutBtn");
+          signOutBtn.addEventListener("click", (e) => {
+            firebase.auth().signOut();
+          });
+          view.showConversation();
+          view.showCurrentConversation();
+        });
       break;
   }
 };
@@ -71,9 +115,13 @@ view.setErrorMessage = (elementId, message) => {
 view.showCurrentConversation = () => {
   document.querySelector(".list-message").innerHTML = ``;
   for (let oneMessage of model.currentConversation.messages) {
-    view.addMessage(oneMessage);
+      view.addMessage(oneMessage);
   }
-
+};
+view.showConversation = () =>{
+  for(conversation of model.conversations){
+    view.addConversation(conversation)
+  }
 };
 view.addMessage = (message) => {
   const messageWrapper = document.createElement("div");
@@ -108,13 +156,11 @@ view.addConversation = (conversation) => {
 
 
 
-  let id = conversation.id;
-  document.getElementById(id).addEventListener('click', (e) => {
-    e.preventDefault();
-    // document.querySelector(".conversation").classList.remove("current");
-    // document.getElementById(id).classList.add('current');
-    model.loadConversations();
-    model.setCurrentConversation(id);
+  let conversationId = conversation.id;
+  document.getElementById(conversationId).addEventListener('click', () => {
+    document.querySelector(".current").classList.remove("current");
+    document.getElementById(conversationId).classList.add('current');
+    model.changeCurrentConversation(conversationId);
     view.showCurrentConversation();
   });
 }

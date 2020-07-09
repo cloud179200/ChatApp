@@ -23,3 +23,11 @@
 .error{
   color: red;
 }
+.header{
+  font-size: 24px;
+  height: 64px;
+  line-height: 64px;
+  background-color: #007bff;
+  text-align: center;
+  color: white;
+}

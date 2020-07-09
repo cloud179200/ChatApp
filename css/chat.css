@@ -2,20 +2,25 @@
     height: calc(100vh - 64px);
     display: flex;
 }
-.chat-container .aside-right{
+.chat-container .aside-left{
     margin: 1px;
     width: 15%;
     border: 1px solid #ecf0f1;
 }
+.chat-container .aside-left .new-conversation{
+    height: 64px;
+    border-bottom: 1px solid #dbdbdd;
+    line-height: 64px;
+    text-align: center;
+}
+.chat-container .aside-left .new-conversation button{
+    padding: 10px 20px;
+}
+
 .current{
     background-color: #ecf0f1;
 }
-.chat-header{
-    background-color: #5f99f5;
-    color: white;
-    height: 64px;
-    font-size: 24px;
-    line-height: 64px;
+#chat-header{
     display: flex;
 }
 .content-header{
@@ -63,7 +68,7 @@
 }
 #sendMessageForm .btn{
     background: none;
-    color: #5f99f5;
+    color: #007bff;
     border: none;
     font-size: 24px;
 }
@@ -72,7 +77,7 @@
     background-color: #bdc3c7;
 }
 .message.mine .content{
-    background-color: #5f99f5;
+    background-color: #007bff;
 }
 
 .message.their{

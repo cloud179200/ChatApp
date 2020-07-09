@@ -18,8 +18,7 @@ model.register = (firstName, lastName, email, password) => {
 };
 
 model.login = (email, password) => {
-  firebase
-    .auth().signInWithEmailAndPassword(email, password).then((user) => {
+  firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
       if (user.user.emailVerified) {
         alert("Success");
         model.currentUser = {
@@ -67,7 +66,7 @@ model.loadConversations = () => {
       }
       model.conversations = data;
       document.querySelector(".list-conversation").innerHTML = ``;
-      for(conversation of data){
+      for(conversation of model.conversations){
         view.addConversation(conversation)
       }
       view.showCurrentConversation();
@@ -78,11 +77,6 @@ model.loadConversations = () => {
   });
 };
 
-model.setCurrentConversation = (id) => {
-  for(conversation of model.conversations){
-    if(conversation.id == id){
-      model.currentConversation = conversation;
-      break;
-    }
-  }
+model.changeCurrentConversation = (conversationId) => {
+  model.currentConversation = model.conversations.filter(item => item.id == conversationId)[0];
 };
