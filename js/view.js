@@ -51,8 +51,8 @@ view.setActiveScreen = (screenName) => {
           };
           model.updateCurrentConversation(message);
           model.listenConversationChange();
-          document.getElementById("sendMessageForm").reset();
         }
+        document.getElementById("sendMessageForm").reset();
       });
 
       const newConversationBtn =  document.querySelector("#newConversationBtn");
@@ -80,16 +80,16 @@ view.setActiveScreen = (screenName) => {
       sendMessageForm.addEventListener("submit", (e) => {
         e.preventDefault();
         if (sendMessageForm.message.value.trim() != '') {
-              const message = {
-                owner: model.currentUser.email,
-                content: sendMessageForm.message.value,
-                createdat: new Date().toISOString()
-              };
-              model.updateCurrentConversation(message);
-              model.listenConversationChange();
-              document.getElementById("sendMessageForm").reset();
-            }
-          });
+          const message = {
+            owner: model.currentUser.email,
+            content: sendMessageForm.message.value,
+            createdat: new Date().toISOString()
+          };
+          model.updateCurrentConversation(message);
+          model.listenConversationChange();
+          }
+          document.getElementById("sendMessageForm").reset(); 
+        });
 
           const newConversationBtn =  document.querySelector("#newConversationBtn");
           newConversationBtn.addEventListener('click', (e) => {
