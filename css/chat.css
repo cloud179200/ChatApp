@@ -14,7 +14,7 @@
     text-align: center;
 }
 .chat-container .aside-left .new-conversation button{
-    padding: 10px 20px;
+    padding: 8% 8%;
 }
 
 .current{
@@ -92,6 +92,9 @@
     display: flex;
     justify-content: flex-end;
 }
+.conversation-num-users{
+    font-size: 14px;
+}
 .content{
     max-width: 40%;
     padding: 10px;
@@ -121,3 +124,13 @@
 .main ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+
+
+.aside-right{
+    max-width: 15%;
+    border: 1px solid #ecf0f1;
+    padding: 0 1%;
+    width: max-content;
+}
+
+

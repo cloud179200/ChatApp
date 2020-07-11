@@ -39,7 +39,7 @@ view.setActiveScreen = (screenName) => {
     case "chatScreen":
       document.getElementById("app").innerHTML = components.chatScreen;
       const sendMessageForm = document.querySelector("#sendMessageForm");
-      
+
       sendMessageForm.addEventListener("submit", (e) => {
         e.preventDefault();
         if (sendMessageForm.message.value.trim() != "") {
@@ -47,7 +47,7 @@ view.setActiveScreen = (screenName) => {
           const message = {
             owner: model.currentUser.email,
             content: messageValue,
-            createdat: new Date().toISOString()
+            createdat: new Date().toISOString(),
           };
           model.updateCurrentConversation(message);
           model.listenConversationChange();
@@ -55,55 +55,30 @@ view.setActiveScreen = (screenName) => {
         document.getElementById("sendMessageForm").reset();
       });
 
-      const newConversationBtn =  document.querySelector("#newConversationBtn");
-      newConversationBtn.addEventListener('click', (e) => {
-        view.setActiveScreen("createConversationScreen");
-      });
-
-
       const signOutBtn = document.querySelector("#signOutBtn");
       signOutBtn.addEventListener("click", (e) => {
         firebase.auth().signOut();
       });
 
-      model.loadConversations();
-      break;
-
-      case "createConversationScreen":
-        document.getElementById("app").innerHTML = components.createConversationScreen;
-        
-        const backToChat = document.querySelector("#back-to-chat");
-        backToChat.addEventListener("click", ()=>{
-          document.getElementById("app").innerHTML = components.chatScreen;
-      const sendMessageForm = document.querySelector("#sendMessageForm");
-      
-      sendMessageForm.addEventListener("submit", (e) => {
+      const createConversationForm = document.querySelector("#form-create-conversation");
+      createConversationForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (sendMessageForm.message.value.trim() != '') {
-          const message = {
-            owner: model.currentUser.email,
-            content: sendMessageForm.message.value,
-            createdat: new Date().toISOString()
-          };
-          model.updateCurrentConversation(message);
-          model.listenConversationChange();
-          }
-          document.getElementById("sendMessageForm").reset(); 
-        });
+        const data = {
+          title: createConversationForm.conversationName.value,
+          friendEmail: createConversationForm.friendEmail.value
+        }
+        controller.createConversation(data);
+        createConversationForm.reset();
+      });
 
-          const newConversationBtn =  document.querySelector("#newConversationBtn");
-          newConversationBtn.addEventListener('click', (e) => {
-            view.setActiveScreen("createConversationScreen");
-          });
-
-
-          const signOutBtn = document.querySelector("#signOutBtn");
-          signOutBtn.addEventListener("click", (e) => {
-            firebase.auth().signOut();
-          });
-          view.showConversation();
-          view.showCurrentConversation();
-        });
+      const addUserToCurrentConversationForm = document.querySelector("#form-add-user");
+      addUserToCurrentConversationForm.addEventListener("submit", (e) => {
+        e.preventDefault()
+        const userEmail = addUserToCurrentConversationForm.userEmail.value;
+        controller.addUserToCurrentConversationForm(userEmail);
+        addUserToCurrentConversationForm.reset();
+      });
+      model.loadConversations();
       break;
   }
 };
@@ -111,17 +86,19 @@ view.setActiveScreen = (screenName) => {
 view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
 };
-
-view.showCurrentConversation = () => {
-  document.querySelector(".list-message").innerHTML = ``;
-  for (let oneMessage of model.currentConversation.messages) {
-      view.addMessage(oneMessage);
+view.showConversations = () => {
+  document.querySelector(".list-conversation").innerHTML = ``;
+  for (conversation of model.conversations) {
+    view.addConversation(conversation);
   }
 };
-view.showConversation = () =>{
-  for(conversation of model.conversations){
-    view.addConversation(conversation)
+view.showCurrentConversation = () => {
+  document.querySelector('.current-conversation-title').innerHTML = model.currentConversation.title;
+  document.querySelector(".list-message").innerHTML = ``;
+  for (let oneMessage of model.currentConversation.messages) {
+    view.addMessage(oneMessage);
   }
+  view.showCurrentUsers();
 };
 view.addMessage = (message) => {
   const messageWrapper = document.createElement("div");
@@ -134,33 +111,47 @@ view.addMessage = (message) => {
     messageWrapper.innerHTML = `<div class="owner">${message.owner}</div>
     <div class="content">${message.content}</div>`;
   }
-  
+
   const listMessage = document.querySelector(".list-message");
   listMessage.appendChild(messageWrapper);
   listMessage.scrollTop = listMessage.scrollHeight;
 };
+
 view.addConversation = (conversation) => {
-  const conversationWrapper = document.createElement('div');
+  const conversationWrapper = document.createElement("div");
   conversationWrapper.classList.add("conversation");
-  
-  if(conversation.id === model.currentConversation.id){
+
+  if (conversation.id === model.currentConversation.id) {
     conversationWrapper.classList.add("current");
   }
-  
-  conversationWrapper.innerHTML =`
+
+  conversationWrapper.innerHTML = `
     <div class="conversation-title">${conversation.title}</div>
-    <div class="conversation-num-users">${model.currentConversation.users.length} Member</div>
-  `
+    <div class="conversation-num-users">${conversation.users.length} Member</div>
+  `;
   conversationWrapper.setAttribute("id", conversation.id);
-  document.querySelector('.list-conversation').appendChild(conversationWrapper);
-
-
+  document.querySelector(".list-conversation").appendChild(conversationWrapper);
 
   let conversationId = conversation.id;
-  document.getElementById(conversationId).addEventListener('click', () => {
+  document.getElementById(conversationId).addEventListener("click", () => {
     document.querySelector(".current").classList.remove("current");
-    document.getElementById(conversationId).classList.add('current');
+    document.getElementById(conversationId).classList.add("current");
     model.changeCurrentConversation(conversationId);
     view.showCurrentConversation();
   });
-}
+};
+
+view.addUser = (user) => {
+  const userWrapper = document.createElement("div");
+  userWrapper.classList.add("user");
+  userWrapper.innerHTML = user;
+
+  document.querySelector(".list-user").appendChild(userWrapper);
+};
+view.showCurrentUsers = () => {
+  document.querySelector(".list-user").innerHTML = ``;
+  for(user of model.currentConversation.users){
+    view.addUser(user);
+  };
+};
+

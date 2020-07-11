@@ -24,7 +24,7 @@ controller.register = (registerInfo) => {
   if (registerInfo.firstName !== '' && registerInfo.lastName !== '' && registerInfo.email !== '' && registerInfo.password != '' && registerInfo.password === registerInfo.confirmPassword){
     model.register(registerInfo.firstName, registerInfo.lastName, registerInfo.email, registerInfo.password)
   }
-}
+};
 controller.login = (email, password) => {
 
   if(email === '') {
@@ -36,5 +36,34 @@ controller.login = (email, password) => {
   }
   else view.setErrorMessage('error-password-name','')
   if(password !== '' && email !== '') model.login(email, password);
+};
+
+controller.validateEmail = (email) => {
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+controller.createConversation = ({title, friendEmail}) => {
+  view.setErrorMessage("conversation-name-error", title === "" ? "Please insert conversation name": '');
+  view.setErrorMessage("friend-email-error", friendEmail === '' ? "Please input friend email": '');
+  view.setErrorMessage("friend-email-error", controller.validateEmail(friendEmail) == false ? "Wrong email" : "");
+
+  if(title != '' && friendEmail != '' && controller.validateEmail(friendEmail) == true){
+    model.createConversation({
+      title: title,
+      users: [friendEmail, model.currentUser.email],
+      createdAt: new Date().toISOString(),
+      messages:[]
+    });
+  };
+};
+
+controller.addUserToCurrentConversationForm = (userEmail) => {
+  view.setErrorMessage("user-email-error", controller.validateEmail(userEmail) == false ? "Wrong email": "");
+  console.log("..........");
+
+  if(userEmail != "" && controller.validateEmail(userEmail) == true){
+    model.addUserToCurrentConversation(userEmail);
+  }
 }
 

@@ -1,4 +1,4 @@
-const components = {}
+const components = {};
 components.registerScreen = `
 <div class="register-container">
 <div class="register-form">
@@ -33,7 +33,7 @@ components.registerScreen = `
   </form>
 </div>
 </div>
-`
+`;
 
 components.loginScreen = `
 <div class="login-container">
@@ -55,16 +55,26 @@ components.loginScreen = `
     </form>
 </div>
 </div>
-`
+`;
 components.chatScreen = `
 <div class="header" id="chat-header"><div class="content-header">Chat App</div><span id="signOutBtn"><i class="fas fa-sign-out-alt"></i></span></div>
 <div class="chat-container">
       <div class="aside-left">
-        <div class="new-conversation">
-        <button class="btn" id="newConversationBtn">New conversation <i class="fas fa-plus-circle"></i></button>
-        </div>
         <div class="list-conversation">
         </div>
+        <form action="" id="form-create-conversation">
+        <div class="input-wrapper">
+          <input type="text" name="conversationName" placeholder="Conversation name..." autocomplete="off">
+          <div class="error" id="conversation-name-error"></div>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" name="friendEmail" placeholder="Friend email..." autocomplete="off">
+          <div class="error" id="friend-email-error"></div>
+        </div>
+        <div class="submit-wrapper">
+          <button type="submit" class="btn">Tạo</button>
+        </div>
+      </form>
       </div>
       <div class="main">
           <div class="conversation-detail">
@@ -77,28 +87,17 @@ components.chatScreen = `
               </form>
           </div>
       </div>
+      <div class="aside-right">
+      <div class="list-user">
+      </div>
+      <form action="" id="form-add-user">
+        <div class="input-wrapper">
+          <input type="text" name="userEmail" placeholder="Enter user email..." autocomplete="off">
+          <div class="error" id="user-email-error"></div>
+        </div>
+        <div class="submit-wrapper">
+          <button type="submit" class="btn">Thêm</button>
+        </div>
+      </div>
   </div>
-`
-
-components.createConversationScreen = `
-<div class="create-conversation-wrapper">
-<div class="header">Add conversation</div>
-<div class="create-conversation-main">
-  <h3>Create conversation</h3>
-  <form action="" class="form-create-conversation">
-    <div class="input-wrapper">
-      <input type="text" name="conversationName" placeholder="Conversation name..." autocomplete="off">
-      <div class="error" id="error-conversation-name"></div>
-    </div>
-    <div class="input-wrapper">
-      <input type="text" name="friendEmail" placeholder="Friend email..." autocomplete="off">
-      <div class="error" id="error-friend-email"></div>
-    </div>
-    <div class="submit-wrapper">
-      <button type="submit" class="btn">Save</button>
-      <button type="button" id="back-to-chat">Cancel</button>
-    </div>
-  </form>
-</div>
-</div>
-`
+`;
