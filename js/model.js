@@ -70,7 +70,7 @@ model.listenConversationChange = () => {
             const element = model.conversations[i];
             if(element.id === oneChangeData.id){
               model.conversations[i] = oneChangeData;
-              if(model.model.conversations[i].messages[-1] != undefined && (model.conversations[i].messages[-1].owner !== model.currentConversation.email)){
+              if(model.conversations[i].messages[-1] != undefined && (model.conversations[i].messages[-1].owner !== model.currentConversation.email)){
                 listShowNotify.push(element.id);
               };
             };
