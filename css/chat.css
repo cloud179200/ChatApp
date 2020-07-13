@@ -16,10 +16,25 @@
 .chat-container .aside-left .new-conversation button{
     padding: 8% 8%;
 }
-
+.conversation{
+    margin-bottom: 5%;
+    position: relative;
+}
 .current{
     background-color: #ecf0f1;
 }
+.conversation-notify{
+    width: 10px;
+    height: 10px;
+    background-color: #007bff;
+    border-radius: 50%;
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    display: none;
+}
+
+
 #chat-header{
     display: flex;
 }

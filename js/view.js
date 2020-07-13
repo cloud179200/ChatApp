@@ -11,7 +11,7 @@ view.setActiveScreen = (screenName) => {
           lastName: registerForm.lastName.value,
           email: registerForm.email.value,
           password: registerForm.password.value,
-          confirmPassword: registerForm.confirmPassword.value,
+          confirmPassword: registerForm.confirmPassword.value
         };
         controller.register(registerInfo);
       });
@@ -98,7 +98,7 @@ view.showCurrentConversation = () => {
   for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage);
   }
-  view.showCurrentUsers();
+  view.showCurrentConversationUsers();
 };
 view.addMessage = (message) => {
   const messageWrapper = document.createElement("div");
@@ -128,8 +128,9 @@ view.addConversation = (conversation) => {
   conversationWrapper.innerHTML = `
     <div class="conversation-title">${conversation.title}</div>
     <div class="conversation-num-users">${conversation.users.length} Member</div>
+    <div class="conversation-notify"></div>
   `;
-  conversationWrapper.setAttribute("id", conversation.id);
+  conversationWrapper.id = conversation.id;
   document.querySelector(".list-conversation").appendChild(conversationWrapper);
 
   let conversationId = conversation.id;
@@ -148,10 +149,13 @@ view.addUser = (user) => {
 
   document.querySelector(".list-user").appendChild(userWrapper);
 };
-view.showCurrentUsers = () => {
+view.showCurrentConversationUsers = () => {
   document.querySelector(".list-user").innerHTML = ``;
   for(user of model.currentConversation.users){
     view.addUser(user);
   };
 };
-
+view.showNotify = (conversationId, status) =>{
+  const conversation = document.getElementById(conversationId);
+  conversation.lastElementChild.style = "display: "+status;
+}

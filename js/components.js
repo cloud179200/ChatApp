@@ -88,16 +88,17 @@ components.chatScreen = `
           </div>
       </div>
       <div class="aside-right">
-      <div class="list-user">
-      </div>
-      <form action="" id="form-add-user">
-        <div class="input-wrapper">
-          <input type="text" name="userEmail" placeholder="Enter user email..." autocomplete="off">
-          <div class="error" id="user-email-error"></div>
+        <div class="list-user">
         </div>
-        <div class="submit-wrapper">
-          <button type="submit" class="btn">Thêm</button>
-        </div>
+        <form action="" id="form-add-user">
+          <div class="input-wrapper">
+            <input type="text" name="userEmail" placeholder="Enter user email..." autocomplete="off">
+            <div class="error" id="add-user-email-error"></div>
+          </div>
+          <div class="submit-wrapper">
+            <button type="submit" class="btn">Thêm</button>
+          </div>
+        </form>
       </div>
   </div>
 `;

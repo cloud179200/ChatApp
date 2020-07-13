@@ -1,3 +1,4 @@
+/*jslint es6 */
 window.onload = () => {
   var firebaseConfig = {
     apiKey: "AIzaSyCbl5wpcR9MMhv0JCTYDBAfpGu_45ipT5A",

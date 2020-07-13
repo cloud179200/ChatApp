@@ -50,25 +50,42 @@ model.updateCurrentConversation = (message) => {
     .update(dataToUpdate);
 };
 model.listenConversationChange = () => {
-  firebase
-    .firestore()
-    .collection(model.collectionName)
-    .where("users", "array-contains", model.currentUser.email)
-    .onSnapshot((res) => {
+  let isFirstRun = false;
+  console.log("Listening...");
+  firebase.firestore().collection(model.collectionName).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
+      if(!isFirstRun) {
+        isFirstRun = true;
+        return;
+      }
       const docChanges = res.docChanges();
       for (oneChange of docChanges) {
+        const type = oneChange.type;
         const oneChangeData = utils.getDataFromDoc(oneChange.doc);
-        if (oneChangeData.id == model.currentConversation.id) {
-          model.currentConversation = oneChangeData;
-          view.showConversations();
-          view.showCurrentConversation();
-        }
-        for (let i = 0; i < model.conversations.length; i++) {
-          if (model.conversations[i].id == oneChangeData.id) {
-            model.conversations[i] = oneChangeData;
+        if(type === "modified"){
+          if(oneChangeData.id == model.currentConversation.id){
+            model.currentConversation = oneChangeData;
           }
+          var listShowNotify = [];
+          for(let i = 0; i < model.conversations.length; i++) {
+            const element = model.conversations[i];
+            if(element.id === oneChangeData.id){
+              model.conversations[i] = oneChangeData;
+              if(model.model.conversations[i].messages[-1] != undefined && (model.conversations[i].messages[-1].owner !== model.currentConversation.email)){
+                listShowNotify.push(element.id);
+              };
+            };
+          };
         }
-      }
+        else if (type === "added"){
+          model.conversations.push(oneChangeData);
+          view.addConversation(oneChangeData);
+        }
+      };
+      view.showConversations();
+      view.showCurrentConversation();
+      for(item of listShowNotify){
+        view.showNotify(item, "block");
+      };
     });
 };
 
@@ -81,12 +98,17 @@ model.loadConversations = () => {
     .then((res) => {
       const data = utils.getDataFromDocs(res.docs);
       if (data.length > 0) {
-        if (model.currentConversation == undefined) {
-          model.currentConversation = data[0];
-        }
         model.conversations = data.sort((a, b) => {
+          if(a.messages[-1] !== undefined && b.messages[-1] !== undefined){
+            console.log(new Date(a.messages[-1].createdat).getTime());
+            console.log(new Date(b.messages[-1].createdat).getTime());
+            console.log(new Date(a.messages[-1].createdat).getTime() - new Date(b.messages[-1].createdat).getTime());
+          }
           return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         });
+        if (model.currentConversation == undefined) {
+          model.currentConversation = model.conversations[0];
+        }
         view.showConversations();
         view.showCurrentConversation();
       }
@@ -96,9 +118,7 @@ model.loadConversations = () => {
     });
 };
 model.changeCurrentConversation = (conversationId) => {
-  model.currentConversation = model.conversations.filter(
-    (item) => item.id == conversationId
-  )[0];
+  model.currentConversation = model.conversations.filter((item) => item.id == conversationId)[0];
 };
 
 model.createConversation = (conversation) =>{
@@ -120,7 +140,5 @@ model.addUserToCurrentConversation = (userEmail) => {
   let dataToUpdate = {
     users: firebase.firestore.FieldValue.arrayUnion(userEmail)
   };
-  console.log("done");
   firebase.firestore().collection(model.collectionName).doc(model.currentConversation.id).update(dataToUpdate);
-  view.setActiveScreen("chatScreen");
 };

@@ -59,8 +59,7 @@ controller.createConversation = ({title, friendEmail}) => {
 };
 
 controller.addUserToCurrentConversationForm = (userEmail) => {
-  view.setErrorMessage("user-email-error", controller.validateEmail(userEmail) == false ? "Wrong email": "");
-  console.log("..........");
+  view.setErrorMessage("add-user-email-error", controller.validateEmail(userEmail) == false ? "Wrong email": "");
 
   if(userEmail != "" && controller.validateEmail(userEmail) == true){
     model.addUserToCurrentConversation(userEmail);
