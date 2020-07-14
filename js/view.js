@@ -88,12 +88,11 @@ view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
 };
 view.showConversations = () => {
-  console.log("showConversations")
   document.querySelector(".list-conversation").innerHTML = ``;
   for (conversation of model.conversations) {
     view.addConversation(conversation);
     if(conversation.messages.length > 0){
-      if(conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email && conversation.id !== model.currentConversation.id){
+      if(conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email ){
         view.showNotify(conversation.id, true);
       }
     }

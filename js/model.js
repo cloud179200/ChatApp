@@ -95,7 +95,7 @@ model.loadConversations = () => {
         model.currentConversation = model.conversations[0];
         view.showConversations();
         view.showCurrentConversation();
-      }
+      };
     })
     .catch((err) => {
       console.log(err);
