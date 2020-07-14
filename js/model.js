@@ -51,7 +51,6 @@ model.updateCurrentConversation = (message) => {
 };
 model.listenConversationChange = () => {
   let isFirstRun = false;
-  console.log("Listening...");
   firebase.firestore().collection(model.collectionName).where("users", "array-contains", model.currentUser.email).onSnapshot((res) => {
       if(!isFirstRun) {
         isFirstRun = true;

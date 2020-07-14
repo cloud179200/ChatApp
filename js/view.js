@@ -47,7 +47,7 @@ view.setActiveScreen = (screenName) => {
           const message = {
             owner: model.currentUser.email,
             content: messageValue,
-            createdat: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
           };
           model.updateCurrentConversation(message);
           model.listenConversationChange();
