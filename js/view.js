@@ -50,8 +50,6 @@ view.setActiveScreen = (screenName) => {
             createdAt: new Date().toISOString(),
           };
           model.updateCurrentConversation(message);
-          model.listenConversationChange();
-          view.showNotify(model.currentConversation.id, false);
         }
         document.getElementById("sendMessageForm").reset();
       });
@@ -79,24 +77,17 @@ view.setActiveScreen = (screenName) => {
         controller.addUserToCurrentConversationForm(userEmail);
         addUserToCurrentConversationForm.reset();
       });
+      document.querySelector('#sendMessageForm input').addEventListener('click', () => {
+        document.getElementById(model.currentConversation.id).lastElementChild.style = 'display: none'
+      })
       model.loadConversations();
+      model.listenConversationChange();
       break;
   }
 };
 
 view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
-};
-view.showConversations = () => {
-  document.querySelector(".list-conversation").innerHTML = ``;
-  for (conversation of model.conversations) {
-    view.addConversation(conversation);
-    if(conversation.messages.length > 0){
-      if(conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email ){
-        view.showNotify(conversation.id, true);
-      }
-    }
-  };
 };
 view.showCurrentConversation = () => {
   document.querySelector('.current-conversation-title').innerHTML = model.currentConversation.title;
@@ -105,6 +96,21 @@ view.showCurrentConversation = () => {
     view.addMessage(oneMessage);
   }
   view.showCurrentConversationUsers();
+};
+view.showCurrentConversationUsers = () => {
+  document.querySelector(".list-user").innerHTML = ``;
+  for(user of model.currentConversation.users){
+    view.addUser(user);
+  };
+};
+view.showConversations = () => {
+  document.querySelector(".list-conversation").innerHTML = ``;
+  for (conversation of model.conversations) {
+    view.addConversation(conversation);
+    if(conversation.messages.length < 1 ||conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email){
+      view.showNotify(conversation.id);
+    }
+  };
 };
 view.addMessage = (message) => {
   const messageWrapper = document.createElement("div");
@@ -143,6 +149,7 @@ view.addConversation = (conversation) => {
   document.getElementById(conversationId).addEventListener("click", () => {
     document.querySelector(".current").classList.remove("current");
     document.getElementById(conversationId).classList.add("current");
+    conversationWrapper.lastElementChild.style = 'display: none';
     model.changeCurrentConversation(conversationId);
     view.showCurrentConversation();
   });
@@ -155,18 +162,8 @@ view.addUser = (user) => {
 
   document.querySelector(".list-user").appendChild(userWrapper);
 };
-view.showCurrentConversationUsers = () => {
-  document.querySelector(".list-user").innerHTML = ``;
-  for(user of model.currentConversation.users){
-    view.addUser(user);
-  };
-};
-view.showNotify = (conversationId, status) =>{
+
+view.showNotify = (conversationId) =>{
   const conversation = document.getElementById(conversationId);
-  if(status){
   conversation.lastElementChild.style = "display: block;";
-  }
-  else{
-    conversation.lastElementChild.style = "display: none;";
-  };
-}
+};
