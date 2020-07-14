@@ -58,21 +58,19 @@ model.listenConversationChange = () => {
         return;
       }
       const docChanges = res.docChanges();
+      var listShowNotify = [];
       for (oneChange of docChanges) {
         const type = oneChange.type;
         const oneChangeData = utils.getDataFromDoc(oneChange.doc);
+        console.log(type);
         if(type === "modified"){
           if(oneChangeData.id == model.currentConversation.id){
             model.currentConversation = oneChangeData;
           }
-          var listShowNotify = [];
           for(let i = 0; i < model.conversations.length; i++) {
             const element = model.conversations[i];
             if(element.id === oneChangeData.id){
               model.conversations[i] = oneChangeData;
-              if(model.conversations[i].messages[-1] != undefined && (model.conversations[i].messages[-1].owner !== model.currentConversation.email)){
-                listShowNotify.push(element.id);
-              };
             };
           };
         }
@@ -83,9 +81,6 @@ model.listenConversationChange = () => {
       };
       view.showConversations();
       view.showCurrentConversation();
-      for(item of listShowNotify){
-        view.showNotify(item, "block");
-      };
     });
 };
 
@@ -99,11 +94,6 @@ model.loadConversations = () => {
       const data = utils.getDataFromDocs(res.docs);
       if (data.length > 0) {
         model.conversations = data.sort((a, b) => {
-          if(a.messages[-1] !== undefined && b.messages[-1] !== undefined){
-            console.log(new Date(a.messages[-1].createdat).getTime());
-            console.log(new Date(b.messages[-1].createdat).getTime());
-            console.log(new Date(a.messages[-1].createdat).getTime() - new Date(b.messages[-1].createdat).getTime());
-          }
           return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         });
         if (model.currentConversation == undefined) {

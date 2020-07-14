@@ -90,7 +90,14 @@ view.showConversations = () => {
   document.querySelector(".list-conversation").innerHTML = ``;
   for (conversation of model.conversations) {
     view.addConversation(conversation);
-  }
+    console.log(conversation.messages[conversation.messages.length - 1]);
+    if(conversation.messages.length > 0){
+      if(conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email && conversation.id !== model.currentConversation.id){
+        view.showNotify(conversation.id);
+        console.log(conversation.id);
+      }
+    }
+  };
 };
 view.showCurrentConversation = () => {
   document.querySelector('.current-conversation-title').innerHTML = model.currentConversation.title;
@@ -155,7 +162,7 @@ view.showCurrentConversationUsers = () => {
     view.addUser(user);
   };
 };
-view.showNotify = (conversationId, status) =>{
+view.showNotify = (conversationId) =>{
   const conversation = document.getElementById(conversationId);
-  conversation.lastElementChild.style = "display: "+status;
+  conversation.lastElementChild.style = "display: block;";
 }
