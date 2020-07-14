@@ -51,6 +51,7 @@ view.setActiveScreen = (screenName) => {
           };
           model.updateCurrentConversation(message);
           model.listenConversationChange();
+          view.showNotify(model.currentConversation.id, false);
         }
         document.getElementById("sendMessageForm").reset();
       });
@@ -87,14 +88,13 @@ view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
 };
 view.showConversations = () => {
+  console.log("showConversations")
   document.querySelector(".list-conversation").innerHTML = ``;
   for (conversation of model.conversations) {
     view.addConversation(conversation);
-    console.log(conversation.messages[conversation.messages.length - 1]);
     if(conversation.messages.length > 0){
       if(conversation.messages[conversation.messages.length - 1].owner !== model.currentUser.email && conversation.id !== model.currentConversation.id){
-        view.showNotify(conversation.id);
-        console.log(conversation.id);
+        view.showNotify(conversation.id, true);
       }
     }
   };
@@ -162,7 +162,12 @@ view.showCurrentConversationUsers = () => {
     view.addUser(user);
   };
 };
-view.showNotify = (conversationId) =>{
+view.showNotify = (conversationId, status) =>{
   const conversation = document.getElementById(conversationId);
+  if(status){
   conversation.lastElementChild.style = "display: block;";
+  }
+  else{
+    conversation.lastElementChild.style = "display: none;";
+  };
 }
