@@ -111,7 +111,7 @@ model.createConversation = (conversation) =>{
     firebase.firestore().collection(model.collectionName).doc(conversationId).update({
       id: conversationId
     }).then(res => {
-      console.log(model.conversations);
+      model.loadConversations();
     }).catch(err => {
       console.log(err);
     });
