@@ -41,9 +41,7 @@ model.login = (email, password) => {
 model.loadConversations = () => {
   firebase.firestore().collection(model.collectionName).where("users", "array-contains", model.currentUser.email).get().then((res) => {
       const data = utils.getDataFromDocs(res.docs);
-      model.conversations = data.sort((a, b) => {
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      });
+      model.conversations = data;
       if (data.length > 0) {
         model.currentConversation = data[0];
         view.showCurrentConversation();
@@ -70,6 +68,7 @@ model.listenConversationChange = () => {
       const docChanges = res.docChanges();
       for (oneChange of docChanges) {
         const type = oneChange.type;
+        console.log(type);
         const oneChangeData = utils.getDataFromDoc(oneChange.doc);
         if(type === "modified"){
           if(oneChangeData.id == model.currentConversation.id){
@@ -101,10 +100,10 @@ model.listenConversationChange = () => {
             model.conversations.push(oneChangeData);
           };
         };
+        view.showConversations();
+        view.showCurrentConversation();
       };
     });
-    view.showConversations();
-    view.showCurrentConversation();
 };
 
 model.changeCurrentConversation = (conversationId) => {

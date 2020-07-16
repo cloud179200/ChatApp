@@ -81,7 +81,6 @@ view.setActiveScreen = (screenName) => {
         document.getElementById(model.currentConversation.id).lastElementChild.style = 'display: none'
       })
       model.loadConversations();
-      model.listenConversationChange();
       break;
   }
 };
@@ -90,6 +89,7 @@ view.setErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerHTML = message;
 };
 view.showCurrentConversation = () => {
+  console.log("meomeo");
   document.querySelector('.current-conversation-title').innerHTML = model.currentConversation.title;
   document.querySelector(".list-message").innerHTML = ``;
   for (let oneMessage of model.currentConversation.messages) {
@@ -142,6 +142,11 @@ view.addConversation = (conversation) => {
     <div class="conversation-num-users">${conversation.users.length} Member</div>
     <div class="conversation-notify"></div>
   `;
+  const mediaQuery = window.matchMedia("screen and (max-width: 768px)");
+  if(mediaQuery.matches){
+    conversationWrapper.firstElementChild.innerHTML = conversation.title.charAt(0);
+  }
+
   conversationWrapper.id = conversation.id;
   document.querySelector(".list-conversation").appendChild(conversationWrapper);
 
